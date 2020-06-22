@@ -2,7 +2,10 @@ package com.nevermindsoftware.urlparser
 
 import com.nevermindsoftware.urlparser.tld.TLDSource
 
-
+/**
+ * Core Url Parser instance. Uses a TLD source to load TLD suffixes to parse raw string domains
+ * @property tldSource tld source to use. The results of this call are not cached and the tld source will be queried each time
+ */
 open class UrlParser(private val tldSource: TLDSource) {
     private class MutableUrl(
         val raw: String,
@@ -16,9 +19,21 @@ open class UrlParser(private val tldSource: TLDSource) {
         var current: String = raw
 
         fun toUrl() =
-            Url(raw=raw,scheme = scheme, host = host, tld = tld, path = path, queryStr = queryStr, subDomains = subDomains)
+            Url(
+                raw = raw,
+                scheme = scheme,
+                host = host,
+                tld = tld,
+                path = path,
+                queryStr = queryStr,
+                subDomains = subDomains
+            )
     }
 
+    /**
+     * Parses a raw url string into a Url object
+     * @param url The url to parse (e.g. http://www.example.com/path?qp1=2&qp2=b)
+     */
     fun parse(url: String): Url {
         val mUrl = MutableUrl(raw = url)
         consumeScheme(mUrl)
@@ -29,6 +44,22 @@ open class UrlParser(private val tldSource: TLDSource) {
         consumeSubDomains(mUrl)
 
         return mUrl.toUrl()
+    }
+
+    /**
+     * Get the tld from a url host. Note that this method does not expect a full url, only the host part (e.g. example.co.uk)
+     * @param host the host to parse the TLD from
+     */
+    fun getTLD(host: String): String {
+        val hostParts = host
+            .split(".") // Get individual parts
+            .map { it.toLowerCase() } // Standardise to lowercase for rule matching
+            .reversed() // Rules are matched from the end of the string backwards
+
+        return getBestTldRule(hostParts)
+            .match(hostParts)
+            .reversed()
+            .joinToString(separator = ".")
     }
 
     private fun consumeScheme(mUrl: MutableUrl) {
@@ -88,19 +119,6 @@ open class UrlParser(private val tldSource: TLDSource) {
             mUrl.subDomains = url.split(".")
             mUrl.current = ""
         }
-    }
-
-
-    fun getTLD(host: String): String {
-        val hostParts = host
-            .split(".") // Get individual parts
-            .map { it.toLowerCase() } // Standardise to lowercase for rule matching
-            .reversed() // Rules are matched from the end of the string backwards
-
-        return getBestTldRule(hostParts)
-            .match(hostParts)
-            .reversed()
-            .joinToString(separator = ".")
     }
 
     private fun getBestTldRule(hostParts: List<String>): SuffixRule {

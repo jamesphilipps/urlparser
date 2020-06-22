@@ -1,11 +1,20 @@
 plugins {
     id 'org.jetbrains.kotlin.multiplatform' version '1.3.72'
+    id 'org.jetbrains.dokka' version '0.10.1'
 }
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 apply plugin: 'maven-publish'
+apply plugin: 'org.jetbrains.dokka'
+
+
+//ext.docsDir = new File(project.rootDir, "documentation")
+ext.docsDir = file("$project.rootDir/documentation")
+println(docsDir)
+println()
 
 kotlin {
     jvm()
@@ -37,6 +46,21 @@ kotlin {
     }
 }
 
+dokka {
+    outputFormat = "javadoc"
+    outputDirectory = file("$docsDir/javadoc")
+}
+task dokkaMD(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = "markdown"
+    outputDirectory = file("$docsDir/markdown")
+}
+configure(dokkaMD) {
+    group = 'documentation'
+    description = 'Generate Markdown Docs'
+}
+build.finalizedBy(dokka, dokkaMD)
+clean.doFirst { delete docsDir }
+
 task('bumpBuildVersion') {
     doLast {
         def propsFile = new File(project.rootDir, "gradle.properties")
@@ -55,6 +79,10 @@ task('bumpBuildVersion') {
 
         split[2] = (Integer.parseInt(split[2]) + 1).toString()
         props.setProperty('version', split.join('.'))
-        propsFile.withOutputStream { stream -> props.store(stream,"") }
+        propsFile.withOutputStream { stream -> props.store(stream, "") }
     }
+}
+configure(bumpBuildVersion) {
+    group = 'build'
+    description = 'Bump the semantic build version by 1'
 }
