@@ -1,0 +1,60 @@
+plugins {
+    id 'org.jetbrains.kotlin.multiplatform' version '1.3.72'
+}
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'maven-publish'
+
+kotlin {
+    jvm()
+    ios()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation kotlin('stdlib-common')
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test-common')
+                implementation kotlin('test-annotations-common')
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation kotlin('stdlib-jdk8')
+            }
+        }
+        jvmTest {
+            dependencies {
+                implementation kotlin('test')
+                implementation kotlin('test-junit')
+            }
+        }
+    }
+}
+
+task('bumpBuildVersion') {
+    doLast {
+        def propsFile = new File(project.rootDir, "gradle.properties")
+        if (!propsFile.exists())
+            throw new GradleException("gradle.properties not found at $propsFile")
+
+        def props = new Properties()
+        propsFile.withInputStream { stream -> props.load(stream) }
+
+        if (!props.containsKey("version"))
+            throw new GradleException("no version defined in gradle.properties at $propsFile")
+
+        def split = props.getProperty('version').split("\\.")
+        if (split.size() != 3)
+            throw new GradleException("expected 3 part semantic version in gradle.properties at $propsFile")
+
+        split[2] = (Integer.parseInt(split[2]) + 1).toString()
+        props.setProperty('version', split.join('.'))
+        propsFile.withOutputStream { stream -> props.store(stream,"") }
+    }
+}

@@ -1,0 +1,11 @@
+# Build
+**/.gradle/
+**/.build
+**/build
+
+# IDE
+*.iml
+.idea/
+
+# misc
+.DS_Store

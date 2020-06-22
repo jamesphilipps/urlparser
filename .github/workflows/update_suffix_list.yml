@@ -1,0 +1,28 @@
+name: Update Suffix List
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  update-list:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Download new list
+      run: ./get_latest_suffix_list.sh
+
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v4
+      with:
+        author_name: James Philipps
+        author_email: jamesphilipps@users.noreply.github.com
+        message: "Update suffix list"
+        add: "*"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
