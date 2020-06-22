@@ -16,6 +16,10 @@ Url parser supports:
 * Path
 * Query Parameters
 
+# Documentation
+Documentation is available in [Javadoc](urlparser/documentation/javadoc/index-all.html) and 
+[Markdown](urlparser/documentation/markdown/urlparser/index.md) format.
+
 # Building
 From the root of the project, run `./gradlew build`. The project jars will be available at urlparser/build/lib
 
