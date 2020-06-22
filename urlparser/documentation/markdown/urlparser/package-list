@@ -1,0 +1,5 @@
+$dokka.format:markdown
+$dokka.linkExtension:md
+
+com.nevermindsoftware.urlparser
+com.nevermindsoftware.urlparser.tld
