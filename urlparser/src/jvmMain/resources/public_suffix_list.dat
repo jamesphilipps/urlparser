@@ -10979,7 +10979,6 @@ za.com
 // No longer operated by CentralNic, these entries should be adopted and/or removed by current operators
 // Submitted by Gavin Brown <gavin.brown@centralnic.com>
 ar.com
-gb.com
 hu.com
 kr.com
 no.com
@@ -11905,6 +11904,11 @@ fireweb.app
 // FLAP : https://www.flap.cloud
 // Submitted by Louis Chemineau <louis@chmn.me>
 flap.id
+
+// FlashDrive : https://flashdrive.io
+// Submitted by Eric Chan <support@flashdrive.io>
+onflashdrive.app
+fldrv.com
 
 // fly.io: https://fly.io
 // Submitted by Kurt Mackey <kurt@fly.io>
