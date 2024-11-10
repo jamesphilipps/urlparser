@@ -5,6 +5,9 @@
 // Please pull this list from, and only from https://publicsuffix.org/list/public_suffix_list.dat,
 // rather than any other VCS sites. Pulling from any other URL is not guaranteed to be supported.
 
+// VERSION: 2024-11-07_17-56-52_UTC
+// COMMIT: e65bca4146a494d60dd4d3beb4a244376fb3825b
+
 // Instructions on pulling and using this list can be found at https://publicsuffix.org/list/.
 
 // ===BEGIN ICANN DOMAINS===
@@ -12650,10 +12653,6 @@ jozi.biz
 // Submitted by Norbert Auler <mail@dnshome.de>
 dnshome.de
 
-// dnstrace.pro : https://dnstrace.pro/
-// Submitted by Chris Partridge <chris@partridge.tech>
-bci.dnstrace.pro
-
 // DotArai : https://www.dotarai.com/
 // Submitted by Atsadawat Netcharadsang <atsadawat@dotarai.co.th>
 online.th
@@ -13009,11 +13008,6 @@ easypanel.host
 // EasyWP : https://www.easywp.com
 // Submitted by <infracloudteam@namecheap.com>
 *.ewp.live
-
-// ECG Robotics, Inc : https://ecgrobotics.org
-// Submitted by <frc1533@ecgrobotics.org>
-onred.one
-staging.onred.one
 
 // eDirect Corp. : https://hosting.url.com.tw/
 // Submitted by C.S. chang <cschang@corp.url.com.tw>
